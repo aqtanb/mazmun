@@ -1,0 +1,52 @@
+# Android Studio & IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration
+local.properties
+app/google-services.json  # Firebase config (if used)
+
+# Keystores & sensitive files
+*.jks
+*.keystore
+
+# Build artifacts
+*.apk
+*.aab
+*.aar
+captures/
+
+# External/native builds
+.externalNativeBuild/
+.cxx/
+
+# macOS
+.DS_Store
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Generated files
+bin/
+gen/
+out/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Editor temp files
+*.swp
+*.swo
+
+# Firebase config
+app/google-services.json
