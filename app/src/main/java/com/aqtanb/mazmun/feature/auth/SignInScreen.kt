@@ -49,7 +49,7 @@ fun SignInScreen(
                         .fillMaxWidth(0.6f)
                         .height(48.dp)
                 ) {
-                    Text(text = "Sign in with Google")
+                    Text(text = if (state.user == null) "Sign in with Google" else "Sign out")
                 }
             }
         }

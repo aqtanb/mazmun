@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
+    private val authRepo: AuthRepository,
     private val signInUseCase: SignInUseCase,
-    private val authRepo: AuthRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(SignInState())
     val state: StateFlow<SignInState> = _state
@@ -47,7 +47,7 @@ class SignInViewModel(
     private fun mapErrorToMessage(error: AppError): String {
         return when(error) {
             is AppError.AuthError.InvalidCredentials -> "Invalid credentials"
-            is AppError.NetworkError.Timeout -> "Connection timeout"
+            is AppError.AuthError.NetworkError -> "Connection timeout"
             else -> "Unknown error occurred"
         }
     }
@@ -56,6 +56,7 @@ class SignInViewModel(
         viewModelScope.launch {
             authRepo.signOut()
             _state.value = SignInState()
+            resetState()
         }
     }
 
@@ -63,6 +64,7 @@ class SignInViewModel(
         _state.value = SignInState()
     }
 
-    fun getCurrentUser(): UserData? =
-        authRepo.getCurrentUser()
+    fun getCurrentUser(): UserData? {
+        return authRepo.getCurrentUser()
+    }
 }

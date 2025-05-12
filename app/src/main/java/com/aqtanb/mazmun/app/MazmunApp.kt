@@ -1,35 +1,24 @@
 package com.aqtanb.mazmun.app
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import com.aqtanb.mazmun.core.ui.theme.MazmunTheme
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
+import com.aqtanb.mazmun.app.navigation.AuthNavHost
+import com.aqtanb.mazmun.app.navigation.MainNavHost
+import com.aqtanb.mazmun.feature.auth.SignInViewModel
+import org.koin.androidx.compose.koinViewModel
 
-//@Composable
-//fun MazmunApp() {
-//    MazmunTheme {
-//        Surface(color = MaterialTheme.colorScheme.background) {
-//            val snackbarHostState = remember { SnackbarHostState() }
-//            val appState = rememberAppState(snackbarHostState)
-//
-//            Scaffold(
-//                snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-//            ) { innerPaddingModifier ->
-//                NavHost(
-//                    navController = appState.navController,
-//                    startDestination = AUTH_SCREEN,
-//                    modifier = Modifier.padding(innerPaddingModifier)
-//                ) {
-//                    notesGraph(appState)
-//                }
-//            }
-//        }
-//    }
-//}
+@Composable
+fun MazmunApp() {
+    val navController = rememberNavController()
+    val signInViewModel: SignInViewModel = koinViewModel()
+    val state by signInViewModel.state.collectAsStateWithLifecycle()
+    val isLoggedIn = signInViewModel.getCurrentUser() != null || state.isSignInSuccessful
+
+    if (isLoggedIn) {
+        MainNavHost(navController, signInViewModel)
+    } else {
+        AuthNavHost(navController, signInViewModel)
+    }
+}

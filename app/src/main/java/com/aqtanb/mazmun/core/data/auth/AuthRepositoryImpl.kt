@@ -19,7 +19,7 @@ class AuthRepositoryImpl(
 
     private fun mapExceptionToError(e: Exception): AppError {
         return when(e) {
-            is IOException -> AppError.NetworkError.Timeout
+            is IOException -> AppError.AuthError.NetworkError
             else -> AppError.AuthError.UnknownError(e.message ?: "Unknown error")
         }
     }

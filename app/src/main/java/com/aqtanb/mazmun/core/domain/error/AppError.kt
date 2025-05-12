@@ -6,10 +6,4 @@ sealed class AppError {
         object NetworkError : AuthError()
         data class UnknownError(val message: String) : AuthError()
     }
-
-    sealed class NetworkError : AppError() {
-        object Timeout : NetworkError()
-        object ServerDown : NetworkError()
-    }
-
 }

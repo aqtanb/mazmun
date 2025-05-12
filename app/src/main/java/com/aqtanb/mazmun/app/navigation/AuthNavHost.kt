@@ -3,53 +3,34 @@ package com.aqtanb.mazmun.app.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.aqtanb.mazmun.feature.auth.SignInScreen
 import com.aqtanb.mazmun.feature.auth.SignInViewModel
-import com.aqtanb.mazmun.feature.feed.FeedScreen
-import com.aqtanb.mazmun.feature.profile.ProfileScreen
 
 @Composable
-fun MazmunNavHost(
+fun AuthNavHost(
     navController: NavHostController,
-    signInViewModel: SignInViewModel,
-    modifier: Modifier = Modifier,
+    signInViewModel: SignInViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = if (signInViewModel.getCurrentUser() != null) Routes.PROFILE else Routes.SIGN_IN,
-        modifier = modifier
+        startDestination = Routes.SIGN_IN
     ) {
         composable(Routes.SIGN_IN) {
             val state by signInViewModel.state.collectAsStateWithLifecycle()
+
             LaunchedEffect(state.isSignInSuccessful) {
                 if (state.isSignInSuccessful) {
-                    navController.navigate("profile")
                     signInViewModel.resetState()
                 }
             }
+
             SignInScreen(
                 state = state,
                 onSignInClick = { signInViewModel.onSignInClick() }
-            )
-        }
-        composable(Routes.FEED) {
-            FeedScreen()
-        }
-        composable(Routes.PROFILE) {
-            ProfileScreen(
-                userData = signInViewModel.getCurrentUser(),
-                onSignOut = {
-                    signInViewModel.onSignOutClick()
-                    navController.navigate("sign_in") {
-                        popUpTo("profile") { inclusive = true }
-                        launchSingleTop = true
-                    }
-                }
             )
         }
     }

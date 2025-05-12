@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Mazmun</string>
+
+    <!--Feed-->
+    <string name="feature_feed_title">Home</string>
+
+    <!--Profile-->
+    <string name="feature_profile_title">Profile</string>
+
 </resources>
