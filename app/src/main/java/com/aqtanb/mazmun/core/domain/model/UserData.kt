@@ -5,3 +5,5 @@ data class UserData(
     val username: String?,
     val profilePictureUrl: String?
 )
+
+val EmptyUserData = UserData("", null, null)

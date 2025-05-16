@@ -7,7 +7,7 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.aqtanb.mazmun.R
 import com.aqtanb.mazmun.core.domain.error.AppError
-import com.aqtanb.mazmun.core.domain.model.SignInResult
+import com.aqtanb.mazmun.core.domain.model.AuthResult
 import com.aqtanb.mazmun.core.domain.model.UserData
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -24,7 +24,7 @@ class GoogleAuthService(
     private val credentialManager = CredentialManager.Companion.create(context)
     private val serverClientId = context.getString(R.string.web_client_id)
 
-    suspend fun signIn(): SignInResult {
+    suspend fun signIn(): AuthResult {
         return try {
             val option = GetGoogleIdOption.Builder()
                 .setServerClientId(serverClientId)
@@ -43,20 +43,20 @@ class GoogleAuthService(
                 val firebaseUser = authResult.user
 
                 firebaseUser?.let { user ->
-                    SignInResult.Success(
+                    AuthResult.Success(
                         user = UserData(
                             userId = user.uid,
                             username = user.displayName,
                             profilePictureUrl = user.photoUrl?.toString()
                         )
                     )
-                } ?: SignInResult.Error(AppError.AuthError.UnknownError("Null user after authentication"))
+                } ?: AuthResult.Failure(AppError.AuthError.UnknownError("Null user after authentication"))
             } else {
-                SignInResult.Error(AppError.AuthError.InvalidCredentials)
+                AuthResult.Failure(AppError.AuthError.InvalidCredentials)
             }
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            SignInResult.Error(AppError.AuthError.UnknownError(e.message ?: "Unknown error"))
+            AuthResult.Failure(AppError.AuthError.UnknownError(e.message ?: "Unknown error"))
         }
     }
 
