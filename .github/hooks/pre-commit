@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "[git hook] Running Spotless Check before commit"
+
+git stash -q --keep-index
+
+./gradlew spotlessCheck --daemon
+RESULT=$?
+
+git stash pop -q
+
+exit $RESULT
