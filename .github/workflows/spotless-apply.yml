@@ -2,7 +2,7 @@ name: Auto Spotless Apply
 
 on:
   push:
-    branches: [ '**' ] 
+    branches: [ '**' ]
 
 jobs:
   format:
@@ -20,6 +20,9 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: gradle
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./gradlew
 
       - name: Apply Spotless Formatting
         run: ./gradlew spotlessApply
