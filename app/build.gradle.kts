@@ -20,12 +20,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val properties = Properties().apply {
-            load(rootProject.file("local.properties").inputStream())
-        }
+        val properties =
+            Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
         buildConfigField("String", "WEB_CLIENT_ID", "\"${properties.getProperty("WEB_CLIENT_ID")}\"")
         resValue("string", "web_client_id", "${properties.getProperty("WEB_CLIENT_ID")}")
-
     }
 
     buildTypes {
@@ -33,7 +33,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -89,6 +89,4 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-
-
 }

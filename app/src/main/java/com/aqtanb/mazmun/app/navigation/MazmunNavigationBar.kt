@@ -19,18 +19,18 @@ fun MazmunNavigationBar(navController: NavController) {
         BottomNavItem(
             route = Routes.HOME,
             title = "Home",
-            icon = Icons.Filled.Home
+            icon = Icons.Filled.Home,
         ),
         BottomNavItem(
             route = Routes.FEED,
             title = "Feed",
-            icon = Icons.Filled.Notifications
+            icon = Icons.Filled.Notifications,
         ),
         BottomNavItem(
             route = Routes.PROFILE,
             title = "Profile",
-            icon = Icons.Filled.Person
-        )
+            icon = Icons.Filled.Person,
+        ),
     )
 
     NavigationBar {
@@ -54,7 +54,7 @@ fun MazmunNavigationBar(navController: NavController) {
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },
             )
         }
     }

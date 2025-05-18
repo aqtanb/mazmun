@@ -7,6 +7,12 @@ import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 
 class SignOutUseCase(private val authRepository: AuthRepository) {
     suspend operator fun invoke(): AuthResult =
-        try { authRepository.signOut(); AuthResult.Success(EmptyUserData) }
-        catch(e: Exception) { AuthResult.Failure(AppError.AuthError.UnknownError(e.message ?: "Unknown error")) }
+        try {
+            authRepository.signOut()
+            AuthResult.Success(EmptyUserData)
+        } catch (
+            e: Exception
+        ) {
+            AuthResult.Failure(AppError.AuthError.UnknownError(e.message ?: "Unknown error"))
+        }
 }

@@ -6,6 +6,11 @@ import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 
 class SignInUseCase(private val authRepository: AuthRepository) {
     suspend operator fun invoke(): AuthResult =
-        try { authRepository.signIn() }
-        catch(e: Exception) { AuthResult.Failure(AppError.AuthError.UnknownError(e.message ?: "Unknown error")) }
+        try {
+            authRepository.signIn()
+        } catch (
+            e: Exception
+        ) {
+            AuthResult.Failure(AppError.AuthError.UnknownError(e.message ?: "Unknown error"))
+        }
 }

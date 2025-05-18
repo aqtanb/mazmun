@@ -20,9 +20,7 @@ import com.aqtanb.mazmun.feature.profile.ProfileViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MazmunNavGraph(
-    authRepository: AuthRepository
-) {
+fun MazmunNavGraph(authRepository: AuthRepository) {
     val navController = rememberNavController()
     val user by authRepository.currentUser.collectAsState()
 
@@ -30,18 +28,18 @@ fun MazmunNavGraph(
         bottomBar = {
             val route = navController.currentBackStackEntryAsState().value?.destination?.route
             if (route == "main/feed" || route == "main/profile") BottomBar(navController)
-        }
+        },
     ) { padding ->
         NavHost(
             navController = navController,
             startDestination = if (user != null) "main/feed" else "auth/signin",
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
         ) {
             composable("auth/signin") {
                 val vm: SignInViewModel = koinViewModel()
                 AuthScreen(
                     authUiState = vm.authUiState.collectAsStateWithLifecycle().value,
-                    onSignInClick = vm::onSignInClick
+                    onSignInClick = vm::onSignInClick,
                 )
             }
             composable("main/feed") {
@@ -56,7 +54,7 @@ fun MazmunNavGraph(
                         navController.navigate("auth/signin") {
                             popUpTo("main") { inclusive = true }
                         }
-                    }
+                    },
                 )
             }
         }

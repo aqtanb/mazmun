@@ -12,14 +12,14 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val signOutUseCase: SignOutUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _authUiState = MutableStateFlow<AuthUiState>(AuthUiState.SignedOut)
     val authUiState: StateFlow<AuthUiState> = _authUiState.asStateFlow()
 
     fun onSignOut() {
         viewModelScope.launch {
             _authUiState.value = AuthUiState.Loading
-            when(val result = signOutUseCase()) {
+            when (val result = signOutUseCase()) {
                 is AuthResult.Success -> AuthUiState.SignedOut
                 is AuthResult.Failure -> AuthUiState.Error(result.error)
             }

@@ -18,13 +18,13 @@ fun BottomBar(navController: NavHostController) {
             selected = navController.currentBackStackEntryAsState().value?.destination?.route == "main/feed",
             icon = { Icon(Icons.Default.Home, null) },
             label = { Text("Feed") },
-            onClick = { navController.navigate("main/feed") }
+            onClick = { navController.navigate("main/feed") },
         )
         NavigationBarItem(
             selected = navController.currentBackStackEntryAsState().value?.destination?.route == "main/profile",
             icon = { Icon(Icons.Default.Person, null) },
             label = { Text("Profile") },
-            onClick = { navController.navigate("main/profile") }
+            onClick = { navController.navigate("main/profile") },
         )
     }
 }

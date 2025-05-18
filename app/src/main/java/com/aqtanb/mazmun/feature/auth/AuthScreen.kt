@@ -19,7 +19,7 @@ fun AuthScreen(
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         when (authUiState) {
             AuthUiState.Loading -> CircularProgressIndicator()
@@ -28,7 +28,7 @@ fun AuthScreen(
                 onClick = onSignInClick,
                 modifier = Modifier
                     .fillMaxWidth(0.6f)
-                    .height(48.dp)
+                    .height(48.dp),
             ) {
                 Text("Sign in with Google")
             }

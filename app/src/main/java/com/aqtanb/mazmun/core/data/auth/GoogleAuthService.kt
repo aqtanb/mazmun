@@ -47,8 +47,8 @@ class GoogleAuthService(
                         user = UserData(
                             userId = user.uid,
                             username = user.displayName,
-                            profilePictureUrl = user.photoUrl?.toString()
-                        )
+                            profilePictureUrl = user.photoUrl?.toString(),
+                        ),
                     )
                 } ?: AuthResult.Failure(AppError.AuthError.UnknownError("Null user after authentication"))
             } else {
@@ -70,7 +70,8 @@ class GoogleAuthService(
         }
     }
 
-    fun getSignedInUser(): UserData? = auth.currentUser?.let {
-        UserData(it.uid, it.displayName, it.photoUrl?.toString())
-    }
+    fun getSignedInUser(): UserData? =
+        auth.currentUser?.let {
+            UserData(it.uid, it.displayName, it.photoUrl?.toString())
+        }
 }

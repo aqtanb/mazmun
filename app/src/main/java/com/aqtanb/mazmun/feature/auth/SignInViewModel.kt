@@ -11,14 +11,14 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _authUiState = MutableStateFlow<AuthUiState>(AuthUiState.SignedOut)
     val authUiState: StateFlow<AuthUiState> = _authUiState.asStateFlow()
 
     fun onSignInClick() {
         viewModelScope.launch {
             _authUiState.value = AuthUiState.Loading
-            when(val result = signInUseCase()) {
+            when (val result = signInUseCase()) {
                 is AuthResult.Success -> AuthUiState.SignedIn(result.user)
                 is AuthResult.Failure -> AuthUiState.Error(result.error)
             }
