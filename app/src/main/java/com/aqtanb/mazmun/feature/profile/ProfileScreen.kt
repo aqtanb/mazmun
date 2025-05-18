@@ -24,7 +24,7 @@ import com.aqtanb.mazmun.core.domain.model.UserData
 @Composable
 fun ProfileScreen(
     userData: UserData?,
-    onSignOut: () -> Unit
+    onSignOutClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -51,7 +51,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        Button(onClick = onSignOut) {
+        Button(onClick = onSignOutClick) {
             Text(text = "Sign out")
         }
     }

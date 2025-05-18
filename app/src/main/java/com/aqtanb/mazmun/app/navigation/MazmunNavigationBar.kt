@@ -1,60 +1,53 @@
 package com.aqtanb.mazmun.app.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.aqtanb.mazmun.core.domain.model.Screen
 
 @Composable
-fun MazmunNavigationBar(navController: NavController) {
-    val items = listOf(
-        BottomNavItem(
-            route = Routes.HOME,
-            title = "Home",
-            icon = Icons.Filled.Home,
-        ),
-        BottomNavItem(
-            route = Routes.FEED,
-            title = "Feed",
-            icon = Icons.Filled.Notifications,
-        ),
-        BottomNavItem(
-            route = Routes.PROFILE,
-            title = "Profile",
-            icon = Icons.Filled.Person,
-        ),
+fun MazmunNavigationBar(navController: NavHostController) {
+    val tabs = listOf(
+        Screen.NavigationBarScreen.Feed,
+        Screen.NavigationBarScreen.Profile,
     )
 
+    val currentRoute = navController
+        .currentBackStackEntryAsState().value
+        ?.destination?.route
+
     NavigationBar {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-
-        items.forEach { item ->
-            val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
-
+        tabs.forEach { screen ->
             NavigationBarItem(
-                icon = {
-                    item.icon
-                },
-                label = { Text(item.title) },
-                selected = selected,
+                selected = currentRoute == screen.route,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    if (currentRoute != screen.route) {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },
+                icon = {
+                    Icon(
+                        imageVector = if (currentRoute == screen.route) {
+                            screen.selectedIcon
+                        } else {
+                            screen.unselectedIcon
+                        },
+                        contentDescription = stringResource(screen.iconTextId),
+                    )
+                },
+                label = { Text(stringResource(screen.iconTextId)) },
+                alwaysShowLabel = true,
             )
         }
     }
