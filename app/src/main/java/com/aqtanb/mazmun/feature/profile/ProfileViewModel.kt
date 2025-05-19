@@ -7,6 +7,7 @@ import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import com.aqtanb.mazmun.core.domain.usecase.SignOutUseCase
 import com.aqtanb.mazmun.feature.auth.AuthUiState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +25,8 @@ class ProfileViewModel(
     fun onSignOut() {
         viewModelScope.launch {
             _authUiState.value = AuthUiState.Loading
-            when (val result = signOutUseCase()) {
+            delay(500)
+            _authUiState.value = when (val result = signOutUseCase()) {
                 is AuthResult.Success -> AuthUiState.SignedOut
                 is AuthResult.Failure -> AuthUiState.Error(result.error)
             }

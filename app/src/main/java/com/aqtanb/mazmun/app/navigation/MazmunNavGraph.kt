@@ -3,7 +3,6 @@ package com.aqtanb.mazmun.app.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,18 +21,6 @@ fun MazmunNavGraph(authRepository: AuthRepository) {
     val navController = rememberNavController()
     val user by authRepository.currentUser.collectAsState()
 
-    LaunchedEffect(user) {
-        if (user != null) {
-            navController.navigate("main") {
-                popUpTo("auth") { inclusive = true }
-            }
-        } else {
-            navController.navigate("auth") {
-                popUpTo("main") { inclusive = true }
-            }
-        }
-    }
-
     Scaffold(
         bottomBar = {
             val route = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -49,7 +36,11 @@ fun MazmunNavGraph(authRepository: AuthRepository) {
 
             navigation(route = "main", startDestination = Screen.NavigationBarScreen.Feed.route) {
                 feedGraph()
-                profileGraph()
+                profileGraph(onSignOut = {
+                    navController.navigate("auth") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                })
             }
         }
     }

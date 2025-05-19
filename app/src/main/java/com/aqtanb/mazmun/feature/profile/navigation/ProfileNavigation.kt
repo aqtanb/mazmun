@@ -9,14 +9,17 @@ import com.aqtanb.mazmun.feature.profile.ProfileScreen
 import com.aqtanb.mazmun.feature.profile.ProfileViewModel
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.profileGraph() {
+fun NavGraphBuilder.profileGraph(onSignOut: () -> Unit) {
     composable(route = Screen.NavigationBarScreen.Profile.route) {
         val profileViewModel: ProfileViewModel = koinViewModel()
         val userData by profileViewModel.userData.collectAsStateWithLifecycle()
+        val authUiState by profileViewModel.authUiState.collectAsStateWithLifecycle()
         ProfileScreen(
+            authUiState = authUiState,
             userData = userData,
             onSignOutClick = {
                 profileViewModel.onSignOut()
+                onSignOut()
             },
         )
     }
