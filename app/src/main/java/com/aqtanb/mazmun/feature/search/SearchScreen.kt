@@ -19,8 +19,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,10 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 // Data class for feed items
-data class FeedItem(
+data class SearchItem(
     val id: String,
     val name: String,
     val description: String,
@@ -42,71 +47,94 @@ data class FeedItem(
 )
 
 @Composable
-fun FeedScreen(
-    modifier: Modifier = Modifier,
-    feedItems: List<FeedItem> = emptyList(),
-    onGoToSearch: () -> Unit = {}
-) {
-    if (feedItems.isEmpty()) {
-        // Empty state with about info and CTA
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+fun SearchScreen(modifier: Modifier = Modifier) {
+    // Sample feed data
+    val searchItems = listOf(
+        SearchItem(
+            id = "1",
+            name = "Startup Founders",
+            description = "Chat, learn, and share stories with founders and early employees",
+            followerCount = 6100,
+            status = "Trending",
+            iconColor = Color(0xFF5D5FEF),
+            following = false,
+        ),
+        SearchItem(
+            id = "2",
+            name = "Wellness Chat",
+            description = "Daily motivation, fitness, and self-care tips",
+            followerCount = 4800,
+            status = "Popular",
+            iconColor = Color(0xFFFF4081),
+            following = true,
+        ),
+        SearchItem(
+            id = "3",
+            name = "Photo Creators",
+            description = "Share, review, and discuss creative photography",
+            followerCount = 5200,
+            status = "Active",
+            iconColor = Color(0xFFFFB300),
+            following = false,
+        ),
+        SearchItem(
+            id = "4",
+            name = "Book Lovers",
+            description = "Discuss novels, non-fiction, and literary classics",
+            followerCount = 7900,
+            status = "Featured",
+            iconColor = Color(0xFF2196F3),
+            following = false,
+        ),
+        SearchItem(
+            id = "5",
+            name = "Eco Warriors",
+            description = "Green tech, eco-initiatives, and sustainable living",
+            followerCount = 2400,
+            status = "Gaining",
+            iconColor = Color(0xFF8BC34A),
+            following = false,
+        ),
+    )
+
+    // Tab state
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val tabs = listOf("Most Active", "Newest")
+
+    Column(modifier = modifier.fillMaxSize()) {
+        // Tabs at the top
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(32.dp),
-            ) {
-                // Fun illustration (emoji)
-                Text("📭", fontSize = 64.sp)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Your feed is empty",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = { selectedTabIndex = index },
+                    text = { Text(title) },
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Mazmun is a place to discover and follow channels that match your interests. " +
-                        "Once you follow channels, their posts will appear here!",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                Button(onClick = onGoToSearch) {
-                    Text("Go to Search & Discover Channels")
-                }
             }
         }
-    } else {
-        // Feed list
-        Column(modifier = modifier.fillMaxSize()) {
-            Text(
-                text = "Your Feed",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp),
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(feedItems) { item ->
-                    FeedItemCard(item = item)
-                }
+
+        // Feed items
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(searchItems) { item ->
+                SearchItemCard(item = item)
             }
         }
     }
 }
 
 @Composable
-fun FeedItemCard(
-    item: FeedItem,
+fun SearchItemCard(
+    item: SearchItem,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -129,6 +157,7 @@ fun FeedItemCard(
                     .background(item.iconColor),
                 contentAlignment = Alignment.Center,
             ) {
+                // Use first letter of name as icon
                 Text(
                     text = item.name.first().toString(),
                     style = MaterialTheme.typography.titleLarge,
@@ -136,6 +165,7 @@ fun FeedItemCard(
                     fontWeight = FontWeight.Bold,
                 )
             }
+
             // Channel info
             Column(
                 modifier = Modifier
@@ -147,31 +177,62 @@ fun FeedItemCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
+
                 Text(
                     text = item.description,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "${formatFollowerCount(item.followerCount)} followers",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+
                     Spacer(modifier = Modifier.width(8.dp))
+
                     Text(
                         text = "•",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+
                     Spacer(modifier = Modifier.width(8.dp))
+
                     Text(
                         text = item.status,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
+            }
+
+            // Follow button
+            Button(
+                onClick = {},
+                shape = RoundedCornerShape(4.dp),
+                modifier = Modifier.padding(start = 8.dp),
+                colors = if (item.following) {
+                    MaterialTheme.colorScheme.primary.let { primary ->
+                        androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = primary,
+                        )
+                    }
+                } else {
+                    androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF00C853),
+                    )
+                },
+            ) {
+                Text(
+                    text = if (item.following) "Following" else "Follow",
+                    style = MaterialTheme.typography.labelMedium,
+                )
             }
         }
     }
@@ -186,8 +247,8 @@ private fun formatFollowerCount(count: Int): String {
 
 @Preview(showBackground = true)
 @Composable
-fun FeedScreenPreview() {
+fun SearchScreenPreview() {
     MaterialTheme {
-        FeedScreen()
+        SearchScreen()
     }
 }

@@ -4,7 +4,14 @@
     <!--Feed-->
     <string name="feature_feed_title">Home</string>
 
+    <!--Search-->
+    <string name="feature_search_title">Search</string>
+
+    <!--Channel-->
+    <string name="feature_channel_title">Channel</string>
+
     <!--Profile-->
     <string name="feature_profile_title">Profile</string>
+
 
 </resources>

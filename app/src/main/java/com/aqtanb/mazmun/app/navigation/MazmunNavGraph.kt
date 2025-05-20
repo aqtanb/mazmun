@@ -7,12 +7,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.aqtanb.mazmun.core.domain.model.Screen
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import com.aqtanb.mazmun.feature.auth.navigation.authGraph
+import com.aqtanb.mazmun.feature.channel.ChannelScreen
+import com.aqtanb.mazmun.feature.feed.SearchScreen
 import com.aqtanb.mazmun.feature.feed.navigation.feedGraph
 import com.aqtanb.mazmun.feature.profile.navigation.profileGraph
 
@@ -35,6 +38,12 @@ fun MazmunNavGraph(authRepository: AuthRepository) {
             authGraph()
 
             navigation(route = "main", startDestination = Screen.NavigationBarScreen.Feed.route) {
+                composable(Screen.NavigationBarScreen.Channel.route) {
+                    ChannelScreen()
+                }
+                composable(Screen.NavigationBarScreen.Search.route) {
+                    SearchScreen()
+                }
                 feedGraph()
                 profileGraph(onSignOut = {
                     navController.navigate("auth") {

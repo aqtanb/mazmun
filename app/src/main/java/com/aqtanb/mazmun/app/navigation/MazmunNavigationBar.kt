@@ -14,6 +14,8 @@ import com.aqtanb.mazmun.core.domain.model.Screen
 fun MazmunNavigationBar(navController: NavHostController) {
     val tabs = listOf(
         Screen.NavigationBarScreen.Feed,
+        Screen.NavigationBarScreen.Search,
+        Screen.NavigationBarScreen.Channel,
         Screen.NavigationBarScreen.Profile,
     )
 
