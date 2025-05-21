@@ -1,7 +1,7 @@
 package com.aqtanb.mazmun.feature.auth
 
 import com.aqtanb.mazmun.core.domain.error.AppError
-import com.aqtanb.mazmun.core.domain.model.UserData
+import com.aqtanb.mazmun.core.model.UserData
 
 sealed interface AuthUiState {
     data object Loading : AuthUiState

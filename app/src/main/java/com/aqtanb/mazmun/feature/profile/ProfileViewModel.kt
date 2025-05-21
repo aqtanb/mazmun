@@ -3,9 +3,9 @@ package com.aqtanb.mazmun.feature.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import com.aqtanb.mazmun.core.domain.usecase.SignOutUseCase
+import com.aqtanb.mazmun.core.model.UserData
 import com.aqtanb.mazmun.feature.auth.AuthUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

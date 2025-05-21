@@ -8,7 +8,7 @@ import androidx.credentials.GetCredentialRequest
 import com.aqtanb.mazmun.R
 import com.aqtanb.mazmun.core.domain.error.AppError
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.domain.model.UserData
+import com.aqtanb.mazmun.core.model.UserData
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.GoogleAuthProvider

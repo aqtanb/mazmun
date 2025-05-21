@@ -2,9 +2,9 @@ package com.aqtanb.mazmun.core.data.auth
 
 import com.aqtanb.mazmun.core.domain.error.AppError
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.domain.model.EmptyUserData
-import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
+import com.aqtanb.mazmun.core.model.EmptyUserData
+import com.aqtanb.mazmun.core.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

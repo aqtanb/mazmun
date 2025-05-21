@@ -12,14 +12,16 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
-    private val authRepository: AuthRepository
+    authRepository: AuthRepository
 ) : ViewModel() {
     private val _authUiState = MutableStateFlow<AuthUiState>(AuthUiState.SignedOut)
     val authUiState: StateFlow<AuthUiState> = _authUiState.asStateFlow()
 
+    val user = authRepository.currentUser
+
     init {
         viewModelScope.launch {
-            authRepository.currentUser.collect { user ->
+            user.collect { user ->
                 if (user == null && _authUiState.value is AuthUiState.SignedIn) {
                     _authUiState.value = AuthUiState.SignedOut
                 }

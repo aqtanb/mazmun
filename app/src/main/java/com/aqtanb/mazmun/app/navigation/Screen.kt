@@ -1,4 +1,4 @@
-package com.aqtanb.mazmun.core.domain.model
+package com.aqtanb.mazmun.app.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons

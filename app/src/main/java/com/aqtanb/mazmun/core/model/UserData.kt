@@ -1,4 +1,4 @@
-package com.aqtanb.mazmun.core.domain.model
+package com.aqtanb.mazmun.core.model
 
 data class UserData(
     val userId: String,

@@ -1,7 +1,7 @@
 package com.aqtanb.mazmun.core.domain.repository
 
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.domain.model.UserData
+import com.aqtanb.mazmun.core.model.UserData
 import kotlinx.coroutines.flow.StateFlow
 
 interface AuthRepository {

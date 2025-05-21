@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.aqtanb.mazmun.core.domain.model.Screen
 
 @Composable
 fun MazmunNavigationBar(navController: NavHostController) {
