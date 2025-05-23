@@ -1,4 +1,4 @@
-package com.aqtanb.mazmun.feature.feed
+package com.aqtanb.mazmun.feature.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -218,13 +219,13 @@ fun SearchItemCard(
                 modifier = Modifier.padding(start = 8.dp),
                 colors = if (item.following) {
                     MaterialTheme.colorScheme.primary.let { primary ->
-                        androidx.compose.material3.ButtonDefaults.buttonColors(
+                        ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
                             contentColor = primary,
                         )
                     }
                 } else {
-                    androidx.compose.material3.ButtonDefaults.buttonColors(
+                    ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF00C853),
                     )
                 },

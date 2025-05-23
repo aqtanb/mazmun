@@ -1,21 +1,32 @@
 package com.aqtanb.mazmun.app
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.navigation.compose.rememberNavController
-import com.aqtanb.mazmun.app.navigation.MazmunNavGraph
-import com.aqtanb.mazmun.feature.auth.SignInViewModel
+import androidx.compose.ui.Modifier
+import com.aqtanb.mazmun.app.navigation.MazmunNavHost
+import com.aqtanb.mazmun.app.navigation.MazmunNavigationBar
+import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import org.koin.compose.koinInject
 
 @Composable
-fun MazmunApp() {
-    val navController = rememberNavController()
-    val signInViewModel: SignInViewModel = koinInject()
-    val user by signInViewModel.user.collectAsState()
+fun MazmunApp(authRepository: AuthRepository = koinInject()) {
+    val appState = rememberMazmunAppState(authRepository = authRepository)
 
-    MazmunNavGraph(
-        user = user,
-        navController = navController,
-    )
+    Scaffold(
+        bottomBar = {
+            if (appState.shouldShowBottomBar) {
+                MazmunNavigationBar(
+                    destinations = appState.topLevelDestinations,
+                    onNavigateToDestination = appState::navigateToTopLevelDestination,
+                    currentDestination = appState.currentDestination,
+                )
+            }
+        },
+    ) { padding ->
+        MazmunNavHost(
+            appState = appState,
+            modifier = Modifier.padding(padding),
+        )
+    }
 }

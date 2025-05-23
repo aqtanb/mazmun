@@ -6,50 +6,38 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 
 @Composable
-fun MazmunNavigationBar(navController: NavHostController) {
-    val tabs = listOf(
-        Screen.NavigationBarScreen.Feed,
-        Screen.NavigationBarScreen.Search,
-        Screen.NavigationBarScreen.Channel,
-        Screen.NavigationBarScreen.Profile,
-    )
-
-    val currentRoute = navController
-        .currentBackStackEntryAsState().value
-        ?.destination?.route
-
+fun MazmunNavigationBar(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?
+) {
     NavigationBar {
-        tabs.forEach { screen ->
+        destinations.forEach { destination ->
+            val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
             NavigationBarItem(
-                selected = currentRoute == screen.route,
-                onClick = {
-                    if (currentRoute != screen.route) {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                },
+                selected = selected,
+                onClick = { onNavigateToDestination(destination) },
                 icon = {
                     Icon(
-                        imageVector = if (currentRoute == screen.route) {
-                            screen.selectedIcon
+                        imageVector = if (selected) {
+                            destination.selectedIcon
                         } else {
-                            screen.unselectedIcon
+                            destination.unselectedIcon
                         },
-                        contentDescription = stringResource(screen.iconTextId),
+                        contentDescription = null,
                     )
                 },
-                label = { Text(stringResource(screen.iconTextId)) },
-                alwaysShowLabel = true,
+                label = { Text(stringResource(destination.iconTextId)) },
             )
         }
     }
 }
+
+private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
+    this?.hierarchy?.any {
+        it.route?.contains(destination.route.simpleName ?: "", ignoreCase = true) == true
+    } == true

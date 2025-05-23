@@ -2,18 +2,38 @@ package com.aqtanb.mazmun.feature.profile.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.aqtanb.mazmun.app.navigation.Screen
+import androidx.navigation.toRoute
 import com.aqtanb.mazmun.feature.profile.ProfileScreen
 import com.aqtanb.mazmun.feature.profile.ProfileViewModel
+import com.aqtanb.mazmun.feature.profile.UserProfileScreen
+import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
+@Serializable data object ProfileRoute
+
+@Serializable data class UserProfileRoute(val userId: String)
+
+fun NavController.navigateToProfile(navOptions: NavOptions? = null) {
+    navigate(route = ProfileRoute, navOptions = navOptions)
+}
+
+fun NavController.navigateToUserProfile(
+    userId: String,
+    navOptions: NavOptions? = null
+) {
+    navigate(route = UserProfileRoute(userId), navOptions = navOptions)
+}
+
 fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit) {
-    composable(route = Screen.NavigationBarScreen.Profile.route) {
+    composable<ProfileRoute> {
         val profileViewModel: ProfileViewModel = koinViewModel()
         val userData by profileViewModel.userData.collectAsStateWithLifecycle()
         val authUiState by profileViewModel.authUiState.collectAsStateWithLifecycle()
+
         ProfileScreen(
             authUiState = authUiState,
             userData = userData,
@@ -21,6 +41,13 @@ fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit) {
                 profileViewModel.onSignOut()
                 onSignOut()
             },
+        )
+    }
+
+    composable<UserProfileRoute> { backStackEntry ->
+        val route = backStackEntry.toRoute<UserProfileRoute>()
+        UserProfileScreen(
+            userId = route.userId,
         )
     }
 }
