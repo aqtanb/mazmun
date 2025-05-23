@@ -3,22 +3,19 @@ package com.aqtanb.mazmun.app
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.aqtanb.mazmun.app.navigation.TopLevelDestination
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
-import com.aqtanb.mazmun.feature.channel.navigation.ChannelRoute
 import com.aqtanb.mazmun.feature.channel.navigation.navigateToChannel
-import com.aqtanb.mazmun.feature.feed.navigation.FeedRoute
 import com.aqtanb.mazmun.feature.feed.navigation.navigateToFeed
-import com.aqtanb.mazmun.feature.profile.navigation.ProfileRoute
 import com.aqtanb.mazmun.feature.profile.navigation.navigateToProfile
-import com.aqtanb.mazmun.feature.search.navigation.SearchRoute
 import com.aqtanb.mazmun.feature.search.navigation.navigateToSearch
 
 @Composable
@@ -39,17 +36,24 @@ class MazmunAppState(
     val isUserAuthenticated: Boolean
         @Composable get() = authRepository.currentUser
             .collectAsState().value != null
+
+    private val previousDestination = mutableStateOf<NavDestination?>(null)
+
     val currentDestination: NavDestination?
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
+        @Composable get() {
+            val currentEntry = navController.currentBackStackEntryFlow.collectAsState(initial = null)
+            return currentEntry.value?.destination.also { destination ->
+                if (destination != null) {
+                    previousDestination.value = destination
+                }
+            } ?: previousDestination.value
+        }
 
     val currentTopLevelDestination: TopLevelDestination?
-        @Composable get() = when (currentDestination?.route) {
-            FeedRoute::class.qualifiedName -> TopLevelDestination.FEED
-            SearchRoute::class.qualifiedName -> TopLevelDestination.SEARCH
-            ChannelRoute::class.qualifiedName -> TopLevelDestination.CHANNEL
-            ProfileRoute::class.qualifiedName -> TopLevelDestination.PROFILE
-            else -> null
+        @Composable get() {
+            return TopLevelDestination.entries.firstOrNull { topLevelDestination ->
+                currentDestination?.hasRoute(route = topLevelDestination.route) == true
+            }
         }
 
     val shouldShowBottomBar: Boolean
