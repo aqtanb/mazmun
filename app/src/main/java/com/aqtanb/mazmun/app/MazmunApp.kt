@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.aqtanb.mazmun.app.navigation.MazmunNavHost
 import com.aqtanb.mazmun.app.navigation.MazmunNavigationBar
+import com.aqtanb.mazmun.app.navigation.MazmunTopAppBar
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import org.koin.compose.koinInject
 
@@ -14,6 +16,14 @@ fun MazmunApp(authRepository: AuthRepository = koinInject()) {
     val appState = rememberMazmunAppState(authRepository = authRepository)
 
     Scaffold(
+        topBar = {
+            if (appState.shouldShowTopBar) {
+                MazmunTopAppBar(
+                    appBarTitle = appState.currentTopLevelDestination?.titleTextId?.let { stringResource(it) }
+                        ?: "",
+                )
+            }
+        },
         bottomBar = {
             if (appState.shouldShowBottomBar) {
                 MazmunNavigationBar(

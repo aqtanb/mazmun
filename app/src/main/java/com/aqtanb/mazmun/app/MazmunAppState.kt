@@ -59,6 +59,9 @@ class MazmunAppState(
     val shouldShowBottomBar: Boolean
         @Composable get() = currentTopLevelDestination != null
 
+    val shouldShowTopBar: Boolean
+        @Composable get() = currentTopLevelDestination != null
+
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
