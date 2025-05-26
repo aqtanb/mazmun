@@ -8,13 +8,9 @@ import androidx.compose.ui.res.stringResource
 import com.aqtanb.mazmun.app.navigation.MazmunNavHost
 import com.aqtanb.mazmun.app.navigation.MazmunNavigationBar
 import com.aqtanb.mazmun.app.navigation.MazmunTopAppBar
-import com.aqtanb.mazmun.core.domain.repository.AuthRepository
-import org.koin.compose.koinInject
 
 @Composable
-fun MazmunApp(authRepository: AuthRepository = koinInject()) {
-    val appState = rememberMazmunAppState(authRepository = authRepository)
-
+fun MazmunApp(appState: MazmunAppState) {
     Scaffold(
         topBar = {
             if (appState.shouldShowTopBar) {
