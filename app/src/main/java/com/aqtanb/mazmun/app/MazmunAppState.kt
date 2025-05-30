@@ -13,10 +13,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.aqtanb.mazmun.app.navigation.TopLevelDestination
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
+import com.aqtanb.mazmun.core.model.UserData
 import com.aqtanb.mazmun.feature.channel.navigation.navigateToChannel
 import com.aqtanb.mazmun.feature.feed.navigation.navigateToFeed
 import com.aqtanb.mazmun.feature.profile.navigation.navigateToProfile
 import com.aqtanb.mazmun.feature.search.navigation.navigateToSearch
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun rememberMazmunAppState(
@@ -31,11 +33,12 @@ fun rememberMazmunAppState(
 @Stable
 class MazmunAppState(
     val navController: NavHostController,
-    private val authRepository: AuthRepository
+    authRepository: AuthRepository
 ) {
+    val currentUser: StateFlow<UserData?> = authRepository.currentUser
+
     val isUserAuthenticated: Boolean
-        @Composable get() = authRepository.currentUser
-            .collectAsState().value != null
+        @Composable get() = currentUser.collectAsState().value != null
 
     private val previousDestination = mutableStateOf<NavDestination?>(null)
 

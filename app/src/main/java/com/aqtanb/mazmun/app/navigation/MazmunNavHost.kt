@@ -32,7 +32,9 @@ fun MazmunNavHost(
         modifier = modifier,
     ) {
         navigation<AuthRoute>(startDestination = SignInRoute::class) {
-            authScreen()
+            authScreen(
+                currentUser = appState.currentUser,
+            )
         }
 
         navigation<MainRoute>(startDestination = FeedRoute::class) {
@@ -69,6 +71,7 @@ fun MazmunNavHost(
                         popUpTo(MainRoute) { inclusive = true }
                     }
                 },
+                userData = appState.currentUser.value,
             )
         }
     }

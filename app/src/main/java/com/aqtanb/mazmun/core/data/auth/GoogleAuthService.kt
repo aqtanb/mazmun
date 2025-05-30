@@ -11,6 +11,7 @@ import com.aqtanb.mazmun.core.domain.model.AuthResult
 import com.aqtanb.mazmun.core.model.UserData
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -37,19 +38,13 @@ class GoogleAuthService(
             val cred = response.credential
             if (cred is CustomCredential && cred.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                 val googleIdToken = GoogleIdTokenCredential.createFrom(cred.data).idToken
-                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
 
+                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
                 val authResult = auth.signInWithCredential(firebaseCredential).await()
                 val firebaseUser = authResult.user
 
                 firebaseUser?.let { user ->
-                    AuthResult.Success(
-                        user = UserData(
-                            userId = user.uid,
-                            username = user.displayName,
-                            profilePictureUrl = user.photoUrl?.toString(),
-                        ),
-                    )
+                    AuthResult.Success(createUserData(user))
                 } ?: AuthResult.Failure(AppError.AuthError.UnknownError("Null user after authentication"))
             } else {
                 AuthResult.Failure(AppError.AuthError.InvalidCredentials)
@@ -70,8 +65,13 @@ class GoogleAuthService(
         }
     }
 
-    fun getSignedInUser(): UserData? =
-        auth.currentUser?.let {
-            UserData(it.uid, it.displayName, it.photoUrl?.toString())
-        }
+    fun getSignedInUser(): UserData? = auth.currentUser?.let { createUserData(it) }
+
+    private fun createUserData(user: FirebaseUser): UserData {
+        return UserData(
+            userId = user.uid,
+            username = user.displayName,
+            profilePictureUrl = user.photoUrl?.toString(),
+        )
+    }
 }

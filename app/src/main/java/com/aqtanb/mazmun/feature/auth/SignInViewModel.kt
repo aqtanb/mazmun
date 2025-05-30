@@ -3,8 +3,8 @@ package com.aqtanb.mazmun.feature.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.domain.repository.AuthRepository
 import com.aqtanb.mazmun.core.domain.usecase.SignInUseCase
+import com.aqtanb.mazmun.core.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,17 +12,15 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
-    authRepository: AuthRepository
+    user: StateFlow<UserData?>
 ) : ViewModel() {
     private val _authUiState = MutableStateFlow<AuthUiState>(AuthUiState.SignedOut)
     val authUiState: StateFlow<AuthUiState> = _authUiState.asStateFlow()
 
-    val user = authRepository.currentUser
-
     init {
         viewModelScope.launch {
-            user.collect { user ->
-                if (user == null && _authUiState.value is AuthUiState.SignedIn) {
+            user.collect { userData ->
+                if (userData == null && _authUiState.value is AuthUiState.SignedIn) {
                     _authUiState.value = AuthUiState.SignedOut
                 }
             }

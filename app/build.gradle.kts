@@ -91,4 +91,7 @@ dependencies {
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // Data Persistence
+    implementation(libs.androidx.datastore.preferences)
 }
