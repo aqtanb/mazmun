@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.aqtanb.mazmun.app.navigation.TopLevelDestination
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.core.domain.repository.AuthRepository
-import com.aqtanb.mazmun.core.model.UserData
 import com.aqtanb.mazmun.feature.channel.navigation.navigateToChannel
 import com.aqtanb.mazmun.feature.feed.navigation.navigateToFeed
 import com.aqtanb.mazmun.feature.profile.navigation.navigateToProfile

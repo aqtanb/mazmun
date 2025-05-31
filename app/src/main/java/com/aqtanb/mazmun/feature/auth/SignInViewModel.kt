@@ -3,8 +3,8 @@ package com.aqtanb.mazmun.feature.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqtanb.mazmun.core.domain.model.AuthResult
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.core.domain.usecase.SignInUseCase
-import com.aqtanb.mazmun.core.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

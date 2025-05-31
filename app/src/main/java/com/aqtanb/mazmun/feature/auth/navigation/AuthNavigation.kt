@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.aqtanb.mazmun.core.model.UserData
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.feature.auth.AuthScreen
 import com.aqtanb.mazmun.feature.auth.SignInViewModel
 import kotlinx.coroutines.flow.StateFlow

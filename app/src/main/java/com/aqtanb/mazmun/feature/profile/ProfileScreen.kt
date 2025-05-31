@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.aqtanb.mazmun.core.model.UserData
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.feature.auth.AuthUiState
 
 @Composable

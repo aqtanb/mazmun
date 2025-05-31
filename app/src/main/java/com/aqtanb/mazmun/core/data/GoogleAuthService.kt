@@ -1,4 +1,4 @@
-package com.aqtanb.mazmun.core.data.auth
+package com.aqtanb.mazmun.core.data
 
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
@@ -8,7 +8,7 @@ import androidx.credentials.GetCredentialRequest
 import com.aqtanb.mazmun.R
 import com.aqtanb.mazmun.core.domain.error.AppError
 import com.aqtanb.mazmun.core.domain.model.AuthResult
-import com.aqtanb.mazmun.core.model.UserData
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
@@ -36,8 +36,8 @@ class GoogleAuthService(
                 .build()
             val response = credentialManager.getCredential(context, request)
             val cred = response.credential
-            if (cred is CustomCredential && cred.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                val googleIdToken = GoogleIdTokenCredential.createFrom(cred.data).idToken
+            if (cred is CustomCredential && cred.type == GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                val googleIdToken = GoogleIdTokenCredential.Companion.createFrom(cred.data).idToken
 
                 val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
                 val authResult = auth.signInWithCredential(firebaseCredential).await()

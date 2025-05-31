@@ -1,7 +1,8 @@
 package com.aqtanb.mazmun.app
 
 import android.app.Application
-import com.aqtanb.mazmun.core.di.coreModule
+import com.aqtanb.mazmun.core.data.di.dataModule
+import com.aqtanb.mazmun.core.datastore.di.dataStoreModule
 import com.aqtanb.mazmun.feature.auth.di.authModule
 import com.aqtanb.mazmun.feature.profile.di.profileModule
 import org.koin.android.ext.koin.androidContext
@@ -12,7 +13,7 @@ class MazmunApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@MazmunApplication)
-            modules(listOf(coreModule, authModule, profileModule))
+            modules(listOf(dataModule, authModule, profileModule, dataStoreModule))
         }
     }
 }

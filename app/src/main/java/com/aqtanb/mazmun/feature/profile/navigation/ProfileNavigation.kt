@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.aqtanb.mazmun.core.model.UserData
+import com.aqtanb.mazmun.core.domain.model.UserData
 import com.aqtanb.mazmun.feature.profile.ProfileScreen
 import com.aqtanb.mazmun.feature.profile.ProfileViewModel
 import kotlinx.serialization.Serializable
