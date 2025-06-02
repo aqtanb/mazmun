@@ -16,7 +16,7 @@ import java.io.IOException
 class AppPreferencesDataSource(
     private val dataStore: DataStore<Preferences>
 ) {
-    val appPreferences: Flow<com.aqtanb.mazmun.core.domain.model.AppPreferences> = dataStore.data
+    val appPreferences: Flow<AppPreferences> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())

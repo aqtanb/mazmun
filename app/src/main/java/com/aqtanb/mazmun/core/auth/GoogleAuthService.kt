@@ -1,4 +1,4 @@
-package com.aqtanb.mazmun.core.data
+package com.aqtanb.mazmun.core.auth
 
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest

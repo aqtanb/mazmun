@@ -8,5 +8,5 @@ interface AppPreferencesRepository {
     val appPreferences: StateFlow<AppPreferences>
     suspend fun setThemeConfig(themeConfig: ThemeConfig)
     suspend fun setDynamicColorPreference(useDynamicColor: Boolean)
-    suspend fun setFirstLaunchComplemented()
+    suspend fun setFirstLaunchCompleted()
 }

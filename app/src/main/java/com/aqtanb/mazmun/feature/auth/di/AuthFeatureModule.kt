@@ -5,7 +5,7 @@ import com.aqtanb.mazmun.feature.auth.SignInViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val authModule = module {
+val authFeatureModule = module {
     factory { SignInUseCase(get()) }
     viewModel { SignInViewModel(get(), get()) }
 }
